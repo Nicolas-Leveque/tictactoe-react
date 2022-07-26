@@ -1,0 +1,17 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(var(--grid-size), 2em);
+    grid-template-rows: repeat(var(--grid-size), 2em);
+    border: black 2px solid;
+
+}
+
+.grid-cell {
+    background-color: lightskyblue;
+    line-height: 1em;
+    border: blue 1px solid;
+    font-size: 2em;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+}
