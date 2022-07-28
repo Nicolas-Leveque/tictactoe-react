@@ -17,7 +17,6 @@ function App() {
     setMoves,
     setMoveLimit,
     moveLimit,
-    player,
     setPlayer
   } = useContext( StoreContext );
 
@@ -28,12 +27,18 @@ function App() {
     document.body.style.setProperty("--grid-size", e.target.value)
   }
 
-  const handleButton = () => {
+  const launchGame = () => {
+    setRunning(true)
+    setPlayer(Math.floor(Math.random() * 2) + 1)
+  }
+
+  const handleReset = () => {
     setRunning(false);
     setBoard([...Array(gridSize ** 2).fill(null)]);
     setMoves(0);
     setWinner("");
-    setPlayer(1)
+    setPlayer(1);
+    
   }
   return (
     <div className="App">
@@ -43,7 +48,7 @@ function App() {
       ) : moves === moveLimit ? (
           <h4>Egalité</h4>
       ) : (
-          <h4>Au tour du joueur {player}</h4>
+          <h4>A vous de jouer</h4>
       )
       }
       <Grid />
@@ -60,9 +65,16 @@ function App() {
           />
         </div>
         <div className="game-control">
-          <button onClick={handleButton}>Relancer</button>
+          <button onClick={launchGame} >Lancer</button>
+          <button onClick={handleReset}>Remise à zéro</button>
         </div>
 
+      </div>
+      <div className="manual">
+        <p>Instructions: Choisissez la taille de la grille et cliquez sur 'Lancer'</p>
+        <p>Le jeu va choisir qui démarre la partie entre vous et l'ordinateur aléatoirement</p>
+        <p>Pour recommencer la partie où en démarrer une nouvelle cliquez sur 'Remise à zéro'</p>
+        <a target="_blank" rel="noreferrer" href="https://icons8.com/icon/BDJWupMrVY0m/tic-tac-toe">Tic Tac Toe</a> icon by <a target="_blank" rel="noreferrer" href="https://icons8.com">Icons8</a>
       </div>
     </div>
   );

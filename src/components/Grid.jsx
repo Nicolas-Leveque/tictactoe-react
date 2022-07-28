@@ -1,12 +1,12 @@
 import { useEffect, useContext } from "react";
 import { StoreContext } from "../state/store";
 import { checkBoard } from "../utils/checkWinner";
+import { randomSpot } from "../utils/ai"
 import './Grid.css'
 
 const Grid = () => {
     const {
         running,
-        setRunning,
         board,
         setBoard,
         winner,
@@ -20,28 +20,37 @@ const Grid = () => {
 
     useEffect(() => {
         if (checkBoard(board)) {
-            setWinner(checkBoard(board) === 1 ? "Joueur 1" : "Joueur 2")
+            setWinner(checkBoard(board) === 1 ? "Joueur" : "Ordinateur")
         }
-    }, [board, setWinner])
+    }, [board, setWinner]);
 
-    const handleClick = (index) => {
+    useEffect(() => {
+        if (player === 2) {
+            aiPlay(board)
+        }
+    })
+
+    const humanPlay = (index) => {
         if( board[index] ) return;
         if( moves === moveLimit ) return;
         if( winner ) return;
-        if(!running) {
-            setRunning(true)
-        }
-
-
+        if(!running) return;
         const tempBoard = [...board];
         tempBoard[index] = player;
-        setBoard(tempBoard)
-
+        setBoard(tempBoard);
         setPlayer(player === 1 ? 2 : 1);
-        setMoves((prevState) => prevState + 1)
+        setMoves((prevState) => prevState + 1);
     }
 
-
+    const aiPlay = (board) => {
+        if ( moves === moveLimit) return;
+        const spot = randomSpot(board)
+        const tempBoard = [ ...board];
+        tempBoard[spot] = player;
+        setBoard(tempBoard);
+        setPlayer(player === 1 ? 2 : 1);
+        setMoves((prevStates) => prevStates + 1);
+    }
 
     return(
         <div>
@@ -51,7 +60,7 @@ const Grid = () => {
                     <div
                         key={index}
                         className='grid-cell'
-                        onClick={() => handleClick(index)}
+                        onClick={() => humanPlay(index)}
                     >
                         {board[index] === 1 ? "X" : board[index] === 2 ? "O" : null}
                     </div>
