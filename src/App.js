@@ -21,6 +21,7 @@ function App() {
   } = useContext( StoreContext );
 
   const handleGridChange = (e) =>{
+    if (e.target.value < 3 || e.target.value > 21) return;
     setGridSize(e.target.value)
     setBoard([...Array(e.target.value ** 2).fill(null)])
     setMoveLimit(e.target.value ** 2)
@@ -61,12 +62,12 @@ function App() {
               min="3"
               max="21"
               onChange={handleGridChange}
-              disabled= {running ? true : false}
+              disabled={running ? true : false}
           />
         </div>
         <div className="game-control">
-          <button onClick={launchGame} >Lancer</button>
-          <button onClick={handleReset}>Remise à zéro</button>
+          <button onClick={launchGame} disabled={running ? true : false}>Lancer</button>
+          <button onClick={handleReset} >Remise à zéro</button>
         </div>
 
       </div>
